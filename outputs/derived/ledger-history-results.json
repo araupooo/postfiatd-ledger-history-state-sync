@@ -1,0 +1,909 @@
+{
+ "catchup_table": [
+  {
+   "gap": 1,
+   "rounds": 1,
+   "within_history_window": true
+  },
+  {
+   "gap": 50,
+   "rounds": 1,
+   "within_history_window": true
+  },
+  {
+   "gap": 100,
+   "rounds": 1,
+   "within_history_window": true
+  },
+  {
+   "gap": 101,
+   "rounds": 2,
+   "within_history_window": true
+  },
+  {
+   "gap": 256,
+   "rounds": 3,
+   "within_history_window": true
+  },
+  {
+   "gap": 257,
+   "rounds": 3,
+   "within_history_window": false
+  },
+  {
+   "gap": 300,
+   "rounds": 3,
+   "within_history_window": false
+  },
+  {
+   "gap": 1000,
+   "rounds": 10,
+   "within_history_window": false
+  }
+ ],
+ "constants": {
+  "acquire_timeout_ms": 3000,
+  "aggressive_after_timeouts": 4,
+  "caught_up_lag_s": 90,
+  "caught_up_published_age_s": 180,
+  "fetch_pack_cache_entries": 65536,
+  "fetch_pack_max_objects": 512,
+  "fetch_pack_refuse_validated_age_s": 40,
+  "fetch_pack_state_nodes": 16384,
+  "fetch_pack_ttl_s": 45,
+  "fetch_pack_tx_nodes": 512,
+  "ledger_fetch_window": "min(ledger_fetch_size_, missing - earliestLedgerSeq + 1)",
+  "ledger_history": 256,
+  "max_ledger_gap": 100,
+  "missing_nodes_find": 256,
+  "peer_count_add": 3,
+  "peer_count_start": 5,
+  "reacquire_interval_s": 300,
+  "req_nodes": 12,
+  "req_nodes_reply": 128,
+  "timeout_retries_max": 6,
+  "validated_age_gate_s": 60
+ },
+ "fetch_pack_table": [
+  {
+   "item": "fetch-pack cache capacity",
+   "unit": "entries",
+   "value": 65536
+  },
+  {
+   "item": "fetch-pack cache lifetime",
+   "unit": "s",
+   "value": 45
+  },
+  {
+   "item": "fetch-pack object cap",
+   "unit": "objects",
+   "value": 512
+  },
+  {
+   "item": "fetch-pack state nodes per ledger",
+   "unit": "nodes",
+   "value": 16384
+  },
+  {
+   "item": "fetch-pack transaction nodes per ledger",
+   "unit": "nodes",
+   "value": 512
+  },
+  {
+   "item": "fetch-pack request staleness",
+   "unit": "s",
+   "value": 1
+  },
+  {
+   "item": "fetch-pack refusal validated age",
+   "unit": "s",
+   "value": 40
+  },
+  {
+   "item": "acquire timeout",
+   "unit": "ms",
+   "value": 3000
+  },
+  {
+   "item": "acquire timeout retries",
+   "unit": "timeouts",
+   "value": 6
+  },
+  {
+   "item": "reacquire interval",
+   "unit": "s",
+   "value": 300
+  }
+ ],
+ "model_current_seq": 1000,
+ "pack": "Ledger History and State-Sync in postfiatd",
+ "pinned_commit": "0085a1ff885d6a446369cf73a4430f75af22be55",
+ "scenarios": [
+  {
+   "id": "S-01",
+   "runs": [
+    {
+     "events": [
+      {
+       "round": 0,
+       "text": "node at ledger N-300, validated age 12 s, write load 1000, 8 peers healthy"
+      },
+      {
+       "round": 1,
+       "text": "round 1: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 2,
+       "text": "round 2: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 3,
+       "text": "round 3: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 3,
+       "text": "tip reached; history backfill fetched 256 of 300 ledgers; 44 outside the 256-ledger window remain unfetched"
+      }
+     ],
+     "fetched": 256,
+     "label": "A",
+     "missing": 44,
+     "outcome": "partial",
+     "params": {
+      "gap": 300,
+      "minimum_online": null,
+      "peer_state": "healthy",
+      "peers": 8,
+      "tamper": "none",
+      "timeouts_before_progress": 0
+     },
+     "reacquire_wait_s": 0,
+     "reason": "gap_beyond_history_window",
+     "rounds": 3,
+     "stage": null,
+     "timeouts": 0,
+     "title": "Far-behind node, 300 ledgers, healthy peers"
+    }
+   ],
+   "title": "Far behind by 300 ledgers"
+  },
+  {
+   "id": "S-02",
+   "runs": [
+    {
+     "events": [
+      {
+       "round": 0,
+       "text": "node at ledger N-1000, 12 peers healthy"
+      },
+      {
+       "round": 1,
+       "text": "round 1: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 2,
+       "text": "round 2: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 3,
+       "text": "round 3: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 4,
+       "text": "round 4: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 5,
+       "text": "round 5: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 6,
+       "text": "round 6: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 7,
+       "text": "round 7: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 8,
+       "text": "round 8: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 9,
+       "text": "round 9: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 10,
+       "text": "round 10: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 10,
+       "text": "tip reached; history backfill fetched 256 of 1000 ledgers; 744 outside the 256-ledger window remain unfetched"
+      }
+     ],
+     "fetched": 256,
+     "label": "A",
+     "missing": 744,
+     "outcome": "partial",
+     "params": {
+      "gap": 1000,
+      "minimum_online": null,
+      "peer_state": "healthy",
+      "peers": 12,
+      "tamper": "none",
+      "timeouts_before_progress": 0
+     },
+     "reacquire_wait_s": 0,
+     "reason": "gap_beyond_history_window",
+     "rounds": 10,
+     "stage": null,
+     "timeouts": 0,
+     "title": "Gap of 1000, all peers healthy"
+    },
+    {
+     "events": [
+      {
+       "round": 0,
+       "text": "node at ledger N-1000, one peer stale (validated age 55 s), remaining peers healthy"
+      },
+      {
+       "round": 0,
+       "text": "stale peer replaced by a healthy peer: one extra round"
+      },
+      {
+       "round": 1,
+       "text": "round 1: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 2,
+       "text": "round 2: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 3,
+       "text": "round 3: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 4,
+       "text": "round 4: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 5,
+       "text": "round 5: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 6,
+       "text": "round 6: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 7,
+       "text": "round 7: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 8,
+       "text": "round 8: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 9,
+       "text": "round 9: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 10,
+       "text": "round 10: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 11,
+       "text": "round 11: caught up 0 ledgers toward the live tip"
+      },
+      {
+       "round": 11,
+       "text": "tip reached; history backfill fetched 256 of 1000 ledgers; 744 outside the 256-ledger window remain unfetched"
+      }
+     ],
+     "fetched": 256,
+     "label": "B",
+     "missing": 744,
+     "outcome": "partial",
+     "params": {
+      "gap": 1000,
+      "minimum_online": null,
+      "peer_state": "one_stale_then_healthy",
+      "peers": 12,
+      "tamper": "none",
+      "timeouts_before_progress": 1
+     },
+     "reacquire_wait_s": 0,
+     "reason": "gap_beyond_history_window",
+     "rounds": 11,
+     "stage": null,
+     "timeouts": 1,
+     "title": "Gap of 1000, one stale peer then healthy peers"
+    }
+   ],
+   "title": "Far behind by 1000 ledgers"
+  },
+  {
+   "id": "S-03",
+   "runs": [
+    {
+     "events": [
+      {
+       "round": 0,
+       "text": "node at ledger N-256, exactly the ledger-history window"
+      },
+      {
+       "round": 1,
+       "text": "round 1: acquired 100 ledgers via fetch pack + SHAMap sync"
+      },
+      {
+       "round": 2,
+       "text": "round 2: acquired 100 ledgers via fetch pack + SHAMap sync"
+      },
+      {
+       "round": 3,
+       "text": "round 3: acquired 56 ledgers via fetch pack + SHAMap sync"
+      }
+     ],
+     "fetched": 256,
+     "label": "A",
+     "missing": 0,
+     "outcome": "synced",
+     "params": {
+      "gap": 256,
+      "minimum_online": null,
+      "peer_state": "healthy",
+      "peers": 6,
+      "tamper": "none",
+      "timeouts_before_progress": 0
+     },
+     "reacquire_wait_s": 0,
+     "reason": "acquired_via_fetch_pack_and_shamap_sync",
+     "rounds": 3,
+     "stage": null,
+     "timeouts": 0,
+     "title": "Gap exactly 256"
+    }
+   ],
+   "title": "Gap exactly at the history window"
+  },
+  {
+   "id": "S-04",
+   "runs": [
+    {
+     "events": [
+      {
+       "round": 0,
+       "text": "node at ledger N-257, one ledger beyond the 256 window, minimumOnline unknown"
+      },
+      {
+       "round": 1,
+       "text": "round 1: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 2,
+       "text": "round 2: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 3,
+       "text": "round 3: caught up 57 ledgers toward the live tip"
+      },
+      {
+       "round": 3,
+       "text": "tip reached; history backfill fetched 256 of 257 ledgers; 1 outside the 256-ledger window remain unfetched"
+      }
+     ],
+     "fetched": 256,
+     "label": "A",
+     "missing": 1,
+     "outcome": "partial",
+     "params": {
+      "gap": 257,
+      "minimum_online": null,
+      "peer_state": "healthy",
+      "peers": 6,
+      "tamper": "none",
+      "timeouts_before_progress": 0
+     },
+     "reacquire_wait_s": 0,
+     "reason": "gap_beyond_history_window",
+     "rounds": 3,
+     "stage": null,
+     "timeouts": 0,
+     "title": "Gap 257, one ledger beyond the window"
+    }
+   ],
+   "title": "Gap one ledger beyond the history window"
+  },
+  {
+   "id": "S-05",
+   "runs": [
+    {
+     "events": [
+      {
+       "round": 0,
+       "text": "fetched header hash does not equal the requested hash"
+      },
+      {
+       "round": 0,
+       "text": "header hash != requested hash: acquire failed, ledger can never be acquired"
+      }
+     ],
+     "fetched": 0,
+     "label": "A",
+     "missing": 20,
+     "outcome": "rejected",
+     "params": {
+      "gap": 20,
+      "minimum_online": null,
+      "peer_state": "healthy",
+      "peers": 5,
+      "tamper": "header",
+      "timeouts_before_progress": 0
+     },
+     "reacquire_wait_s": 0,
+     "reason": "header_hash_mismatch",
+     "rounds": 0,
+     "stage": "header",
+     "timeouts": 0,
+     "title": "Tampered header"
+    },
+    {
+     "events": [
+      {
+       "round": 0,
+       "text": "fetched transaction node bytes do not hash to the advertised node hash"
+      },
+      {
+       "round": 0,
+       "text": "transaction node bytes do not hash to the advertised node hash: acquire failed"
+      }
+     ],
+     "fetched": 0,
+     "label": "B",
+     "missing": 20,
+     "outcome": "rejected",
+     "params": {
+      "gap": 20,
+      "minimum_online": null,
+      "peer_state": "healthy",
+      "peers": 5,
+      "tamper": "tx_node",
+      "timeouts_before_progress": 0
+     },
+     "reacquire_wait_s": 0,
+     "reason": "tx_node_hash_mismatch",
+     "rounds": 0,
+     "stage": "transactions",
+     "timeouts": 0,
+     "title": "Tampered transaction node"
+    }
+   ],
+   "title": "Tampered fetched ledgers"
+  },
+  {
+   "id": "S-06",
+   "runs": [
+    {
+     "events": [
+      {
+       "round": 0,
+       "text": "fetched state node bytes do not hash to the advertised node hash"
+      },
+      {
+       "round": 0,
+       "text": "state node bytes do not hash to the advertised node hash: acquire failed"
+      }
+     ],
+     "fetched": 0,
+     "label": "A",
+     "missing": 40,
+     "outcome": "rejected",
+     "params": {
+      "gap": 40,
+      "minimum_online": null,
+      "peer_state": "healthy",
+      "peers": 5,
+      "tamper": "state_node",
+      "timeouts_before_progress": 0
+     },
+     "reacquire_wait_s": 0,
+     "reason": "state_node_hash_mismatch",
+     "rounds": 0,
+     "stage": "state",
+     "timeouts": 0,
+     "title": "Tampered state node"
+    }
+   ],
+   "title": "Tampered state node in a fetched ledger"
+  },
+  {
+   "id": "S-07",
+   "runs": [
+    {
+     "events": [
+      {
+       "round": 0,
+       "text": "all peers report validated age above 40 s, fetch-pack build refused"
+      },
+      {
+       "round": 0,
+       "text": "every peer reports validated age over 40 s: fetch-pack build refused"
+      }
+     ],
+     "fetched": 0,
+     "label": "A",
+     "missing": 120,
+     "outcome": "stalled",
+     "params": {
+      "gap": 120,
+      "minimum_online": null,
+      "peer_state": "all_stale",
+      "peers": 4,
+      "tamper": "none",
+      "timeouts_before_progress": 0
+     },
+     "reacquire_wait_s": 0,
+     "reason": "fetch_pack_refused_validated_age_over_40s",
+     "rounds": 0,
+     "stage": null,
+     "timeouts": 0,
+     "title": "All peers stale"
+    },
+    {
+     "events": [
+      {
+       "round": 0,
+       "text": "all peers stale, then one healthy peer (validated age 5 s) answers"
+      },
+      {
+       "round": 0,
+       "text": "stale peer replaced by a healthy peer: one extra round"
+      },
+      {
+       "round": 1,
+       "text": "round 1: acquired 100 ledgers via fetch pack + SHAMap sync"
+      },
+      {
+       "round": 2,
+       "text": "round 2: acquired 20 ledgers via fetch pack + SHAMap sync"
+      },
+      {
+       "round": 3,
+       "text": "round 3: acquired 0 ledgers via fetch pack + SHAMap sync"
+      }
+     ],
+     "fetched": 120,
+     "label": "B",
+     "missing": 0,
+     "outcome": "synced",
+     "params": {
+      "gap": 120,
+      "minimum_online": null,
+      "peer_state": "stale_then_healthy",
+      "peers": 4,
+      "tamper": "none",
+      "timeouts_before_progress": 2
+     },
+     "reacquire_wait_s": 0,
+     "reason": "acquired_via_fetch_pack_and_shamap_sync",
+     "rounds": 3,
+     "stage": null,
+     "timeouts": 2,
+     "title": "Stale peers, then one healthy peer"
+    }
+   ],
+   "title": "Stale peers serve no fetch pack"
+  },
+  {
+   "id": "S-08",
+   "runs": [
+    {
+     "events": [
+      {
+       "round": 0,
+       "text": "best peer holds only ledgers N-199..N, node needs N-299..N"
+      },
+      {
+       "round": 1,
+       "text": "round 1: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 2,
+       "text": "round 2: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 3,
+       "text": "round 3: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 3,
+       "text": "tip reached; history backfill fetched 100 of 300 ledgers; 200 remain unserved by the peer"
+      }
+     ],
+     "fetched": 100,
+     "label": "A",
+     "missing": 200,
+     "outcome": "partial",
+     "params": {
+      "gap": 300,
+      "minimum_online": null,
+      "peer_have": 100,
+      "peer_state": "partial",
+      "peers": 3,
+      "tamper": "none",
+      "timeouts_before_progress": 0
+     },
+     "reacquire_wait_s": 0,
+     "reason": "peer_serves_partial_history",
+     "rounds": 3,
+     "stage": null,
+     "timeouts": 0,
+     "title": "Peer serves 100 of 300"
+    },
+    {
+     "events": [
+      {
+       "round": 0,
+       "text": "best peer holds only ledgers N-49..N, node needs N-299..N"
+      },
+      {
+       "round": 1,
+       "text": "round 1: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 2,
+       "text": "round 2: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 3,
+       "text": "round 3: caught up 100 ledgers toward the live tip"
+      },
+      {
+       "round": 3,
+       "text": "tip reached; history backfill fetched 50 of 300 ledgers; 250 remain unserved by the peer"
+      }
+     ],
+     "fetched": 50,
+     "label": "B",
+     "missing": 250,
+     "outcome": "partial",
+     "params": {
+      "gap": 300,
+      "minimum_online": null,
+      "peer_have": 50,
+      "peer_state": "partial",
+      "peers": 3,
+      "tamper": "none",
+      "timeouts_before_progress": 0
+     },
+     "reacquire_wait_s": 0,
+     "reason": "peer_serves_partial_history",
+     "rounds": 3,
+     "stage": null,
+     "timeouts": 0,
+     "title": "Peer serves 50 of 300"
+    }
+   ],
+   "title": "Partial-history serving"
+  },
+  {
+   "id": "S-09",
+   "runs": [
+    {
+     "events": [
+      {
+       "round": 0,
+       "text": "7 timeouts on ledger N-50, acquire fails, recent-failure entry recorded"
+      },
+      {
+       "round": 0,
+       "text": "7 timeouts exceed the 6 retry limit: acquire failed, reacquire blocked for 300 s"
+      }
+     ],
+     "fetched": 0,
+     "label": "A",
+     "missing": 50,
+     "outcome": "stalled",
+     "params": {
+      "gap": 50,
+      "minimum_online": null,
+      "peer_state": "healthy",
+      "peers": 5,
+      "tamper": "none",
+      "timeouts_before_progress": 7
+     },
+     "reacquire_wait_s": 300,
+     "reason": "acquire_failed_after_timeout_limit",
+     "rounds": 0,
+     "stage": null,
+     "timeouts": 7,
+     "title": "Timeouts exceed the retry limit"
+    },
+    {
+     "events": [
+      {
+       "round": 0,
+       "text": "reacquire after the 300 s interval, same ledger N-50, peers healthy"
+      },
+      {
+       "round": 1,
+       "text": "round 1: acquired 50 ledgers via fetch pack + SHAMap sync"
+      }
+     ],
+     "fetched": 50,
+     "label": "B",
+     "missing": 0,
+     "outcome": "synced",
+     "params": {
+      "gap": 50,
+      "minimum_online": null,
+      "peer_state": "healthy",
+      "peers": 5,
+      "tamper": "none",
+      "timeouts_before_progress": 0
+     },
+     "reacquire_wait_s": 0,
+     "reason": "acquired_via_fetch_pack_and_shamap_sync",
+     "rounds": 1,
+     "stage": null,
+     "timeouts": 0,
+     "title": "Reacquire after the 5-minute block"
+    }
+   ],
+   "title": "Stalled then resumed catch-up"
+  },
+  {
+   "id": "S-10",
+   "runs": [
+    {
+     "events": [
+      {
+       "round": 0,
+       "text": "no active peer holds ledger N-80"
+      },
+      {
+       "round": 0,
+       "text": "no active peer has the ledger range: no fetch pack requested"
+      }
+     ],
+     "fetched": 0,
+     "label": "A",
+     "missing": 80,
+     "outcome": "stalled",
+     "params": {
+      "gap": 80,
+      "minimum_online": null,
+      "peer_state": "none",
+      "peers": 0,
+      "tamper": "none",
+      "timeouts_before_progress": 0
+     },
+     "reacquire_wait_s": 0,
+     "reason": "no_peer_holds_ledger",
+     "rounds": 0,
+     "stage": null,
+     "timeouts": 0,
+     "title": "No peer has the ledger"
+    }
+   ],
+   "title": "No peer can serve the missing ledger"
+  },
+  {
+   "id": "S-11",
+   "runs": [
+    {
+     "events": [
+      {
+       "round": 0,
+       "text": "fetched header carries a zero account hash"
+      },
+      {
+       "round": 0,
+       "text": "header carries a zero account hash: acquire failed in tryDB"
+      }
+     ],
+     "fetched": 0,
+     "label": "A",
+     "missing": 10,
+     "outcome": "rejected",
+     "params": {
+      "gap": 10,
+      "minimum_online": null,
+      "peer_state": "healthy",
+      "peers": 5,
+      "tamper": "zero_account_hash",
+      "timeouts_before_progress": 0
+     },
+     "reacquire_wait_s": 0,
+     "reason": "zero_account_hash",
+     "rounds": 0,
+     "stage": "state",
+     "timeouts": 0,
+     "title": "Zero account hash"
+    }
+   ],
+   "title": "Ledger with a zero account hash"
+  },
+  {
+   "id": "S-12",
+   "runs": [
+    {
+     "events": [
+      {
+       "round": 0,
+       "text": "single missing ledger N-1, validated age 8 s"
+      },
+      {
+       "round": 1,
+       "text": "round 1: acquired 1 ledgers via fetch pack + SHAMap sync"
+      }
+     ],
+     "fetched": 1,
+     "label": "A",
+     "missing": 0,
+     "outcome": "synced",
+     "params": {
+      "gap": 1,
+      "minimum_online": null,
+      "peer_state": "healthy",
+      "peers": 5,
+      "tamper": "none",
+      "timeouts_before_progress": 0
+     },
+     "reacquire_wait_s": 0,
+     "reason": "acquired_via_fetch_pack_and_shamap_sync",
+     "rounds": 1,
+     "stage": null,
+     "timeouts": 0,
+     "title": "One missing ledger"
+    }
+   ],
+   "title": "Single missing ledger"
+  },
+  {
+   "id": "S-13",
+   "runs": [
+    {
+     "events": [
+      {
+       "round": 0,
+       "text": "missing ledgers reach below earliestLedgerSeq 900; node needs 850..1000"
+      },
+      {
+       "round": 0,
+       "text": "fetch stops at earliestLedgerSeq 900: 49 ledgers below it cannot be fetched"
+      }
+     ],
+     "fetched": 101,
+     "label": "A",
+     "missing": 49,
+     "outcome": "stalled",
+     "params": {
+      "earliest_seq": 900,
+      "gap": 150,
+      "minimum_online": null,
+      "peer_state": "healthy",
+      "peers": 5,
+      "tamper": "none",
+      "timeouts_before_progress": 0
+     },
+     "reacquire_wait_s": 0,
+     "reason": "gap_below_earliest_ledger_seq",
+     "rounds": 0,
+     "stage": null,
+     "timeouts": 0,
+     "title": "Gap reaches below the earliest ledger"
+    }
+   ],
+   "title": "Gap below the earliest ledger sequence"
+  }
+ ],
+ "totals": {
+  "partial": 6,
+  "rejected": 4,
+  "runs": 18,
+  "scenarios": 13,
+  "stalled": 4,
+  "synced": 4
+ }
+}

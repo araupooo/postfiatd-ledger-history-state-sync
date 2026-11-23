@@ -1,0 +1,83 @@
+{
+ "checks": [
+  {
+   "check": "pinned checkout HEAD equals the pinned commit",
+   "detail": "HEAD=0085a1ff885d6a446369cf73a4430f75af22be55",
+   "id": "A-00",
+   "pass": true
+  },
+  {
+   "check": "45 rules: 38 VERIFIED anchors inside cited ranges, 4 SPECIFIED (external URLs), 2 MODELLED, 1 UNTESTABLE, none with a faked source",
+   "detail": "counts={'MODELLED': 2, 'SPECIFIED': 4, 'UNTESTABLE': 1, 'VERIFIED': 38}",
+   "id": "A-01",
+   "pass": true
+  },
+  {
+   "check": "per-scenario arithmetic reconciles; totals 13 scenarios / 18 runs / synced 4 / stalled 4 / rejected 4 / partial 6; matrix rows == runs; fetched+missing == gap; catch-up rounds == ceil(gap/100) (+1 peer switch) for synced and partial runs",
+   "detail": "totals={'partial': 6, 'rejected': 4, 'runs': 18, 'scenarios': 13, 'stalled': 4, 'synced': 4} outcomes={'partial': 6, 'synced': 4, 'rejected': 4, 'stalled': 4} ",
+   "id": "B-01",
+   "pass": true
+  },
+  {
+   "check": "catch-up rounds == ceil(gap/100) and window == (gap <= 256) for gaps 1/50/100/101/256/257/300/1000; fetch-pack table matches the pinned constants",
+   "detail": "all match",
+   "id": "C-01",
+   "pass": true
+  },
+  {
+   "check": "3000ms (InboundLedger.cpp:74), retries = 6 (:54), aggressive = 4 (:58), LEDGER_HISTORY = 256 (Config.h:224), MAX_LEDGER_GAP{100} (LedgerMaster.cpp:64), cache 65536/45s (:116-117), 40s (:2133), sha512Half (:2043)",
+   "detail": "all 9 tokens at recorded lines",
+   "id": "D-01",
+   "pass": true
+  },
+  {
+   "check": "getFetchPack retrieves, deletes, and compares sha512Half(data) with the requested hash (LedgerMaster.cpp:2040-2043)",
+   "detail": "retrieve+delete+hash-compare verified",
+   "id": "E-01",
+   "pass": true
+  },
+  {
+   "check": "matrix == results == scenarios (13); findings 12, claims 24 (16/2/4/2), risks 14, gaps 8; excerpts 44 across 10 files agree across manifest, files, hashes",
+   "detail": "claims=24 risks=14 gaps=8 excerpts=44 files=10",
+   "id": "F-01",
+   "pass": true
+  },
+  {
+   "check": "determinism: simulator re-run reproduces byte-identical results and matrix (full SHA-256)",
+   "detail": "results shipped=7fa88de8cd91d7b403c2b8bda3eeab50de330b6674a65a13eaf055b609c9c1f7 rerun=7fa88de8cd91d7b403c2b8bda3eeab50de330b6674a65a13eaf055b609c9c1f7; matrix shipped=1a2077882b89c20fe8cc3bc8e2f38b8d1a7e3ecb4ace4ec656c02836cb978f4d rerun=1a2077882b89c20fe8cc3bc8e2f38b8d1a7e3ecb4ace4ec656c02836cb978f4d",
+   "id": "G-01",
+   "pass": true
+  },
+  {
+   "check": "every excerpt digest matches source-hashes.json; every manifest blob SHA/size matches the checkout; run-manifest digests match shipped derived files",
+   "detail": "manifest digests match",
+   "id": "H-01",
+   "pass": true
+  },
+  {
+   "check": "absence findings re-grepped: history_gap 0 hits; FetchPackTimeout 0 hits; maxFetchPack 0 hits",
+   "detail": "history_gap=0 FetchPackTimeout=0 maxFetchPack=0",
+   "id": "I-01",
+   "pass": true
+  },
+  {
+   "check": "MAX_LEDGER_GAP 100 is below LEDGER_HISTORY 256; fetch-pack caps 512 objects / 16384 state nodes / 512 tx nodes are in the build loop; the docs 256 figure appears in the citations",
+   "detail": "divergence tokens verified",
+   "id": "J-01",
+   "pass": true
+  },
+  {
+   "check": "timing sanity: total probe elapsed_ms is non-negative (loose band, never exact)",
+   "detail": "value not recorded; never compared",
+   "id": "T-01",
+   "pass": true
+  }
+ ],
+ "matrix_sha256": "1a2077882b89c20fe8cc3bc8e2f38b8d1a7e3ecb4ace4ec656c02836cb978f4d",
+ "pack": "Ledger History and State-Sync in postfiatd",
+ "passed": 12,
+ "pinned_commit": "0085a1ff885d6a446369cf73a4430f75af22be55",
+ "results_file": "outputs/derived/ledger-history-results.json",
+ "results_sha256": "7fa88de8cd91d7b403c2b8bda3eeab50de330b6674a65a13eaf055b609c9c1f7",
+ "total": 12
+}
