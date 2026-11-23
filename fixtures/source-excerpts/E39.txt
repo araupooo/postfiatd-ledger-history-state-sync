@@ -1,0 +1,31 @@
+# Source excerpt E39 — postfiatd 0085a1ff885d6a446369cf73a4430f75af22be55.
+# File: src/xrpld/app/ledger/detail/LedgerMaster.cpp, lines 650-672.
+# Line numbers verified with grep -n on a local checkout of the pinned commit.
+# Source file SHA-256: eff20a953d6b6fafe7ca44a2999a4c90c5ef62eea82e43baed8ba3e959da5ef1
+# Source file git blob SHA: 67826c253286c69622334382ac89db711c7a60d2
+# Source file size: 70382 bytes
+
+# --- src/xrpld/app/ledger/detail/LedgerMaster.cpp lines 650-672 ---
+void
+LedgerMaster::tryFill(std::shared_ptr<Ledger const> ledger)
+{
+    std::uint32_t seq = ledger->info().seq;
+    uint256 prevHash = ledger->info().parentHash;
+
+    std::map<std::uint32_t, LedgerHashPair> ledgerHashes;
+
+    std::uint32_t minHas = seq;
+    std::uint32_t maxHas = seq;
+
+    NodeStore::Database& nodeStore{app_.getNodeStore()};
+    while (!app_.getJobQueue().isStopping() && seq > 0)
+    {
+        {
+            std::lock_guard ml(m_mutex);
+            minHas = seq;
+            --seq;
+
+            if (haveLedger(seq))
+                break;
+        }
+

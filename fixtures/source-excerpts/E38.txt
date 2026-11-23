@@ -1,0 +1,37 @@
+# Source excerpt E38 — postfiatd 0085a1ff885d6a446369cf73a4430f75af22be55.
+# File: src/xrpld/app/ledger/LedgerReplayer.h, lines 39-67.
+# Line numbers verified with grep -n on a local checkout of the pinned commit.
+# Source file SHA-256: 8ca2f9e841aad4d65a0773f65950becbd5190bc9e81a4c2694a6c54e4163363f
+# Source file git blob SHA: b00430303a1fde314385b419f58dfb0e48cffab6
+# Source file size: 5236 bytes
+
+# --- src/xrpld/app/ledger/LedgerReplayer.h lines 39-67 ---
+// timeout value for LedgerReplayTask
+auto constexpr TASK_TIMEOUT = std::chrono::milliseconds{500};
+
+// for LedgerReplayTask to calculate max allowed timeouts
+// = max( TASK_MAX_TIMEOUTS_MINIMUM,
+//        (# of ledger to replay) * TASK_MAX_TIMEOUTS_MULTIPLIER)
+std::uint32_t constexpr TASK_MAX_TIMEOUTS_MULTIPLIER = 2;
+std::uint32_t constexpr TASK_MAX_TIMEOUTS_MINIMUM = 10;
+
+// timeout value for subtasks: LedgerDeltaAcquire and SkipListAcquire
+auto constexpr SUB_TASK_TIMEOUT = std::chrono::milliseconds{250};
+// max of allowed subtask timeouts
+std::uint32_t constexpr SUB_TASK_MAX_TIMEOUTS = 10;
+
+// max number of peers that do not support the ledger replay feature
+// returned by the PeerSet before switch to fallback
+auto constexpr MAX_NO_FEATURE_PEER_COUNT = 2;
+// subtask timeout value after fallback
+auto constexpr SUB_TASK_FALLBACK_TIMEOUT = std::chrono::milliseconds{1000};
+
+// for LedgerReplayer to limit the number of LedgerReplayTask
+std::uint32_t constexpr MAX_TASKS = 10;
+
+// for LedgerReplayer to limit the number of ledgers to replay in one task
+std::uint32_t constexpr MAX_TASK_SIZE = 256;
+
+// to limit the number of LedgerReplay related jobs in JobQueue
+std::uint32_t constexpr MAX_QUEUED_TASKS = 100;
+}  // namespace LedgerReplayParameters

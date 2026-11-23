@@ -1,0 +1,48 @@
+# Source excerpt E43 — postfiatd 0085a1ff885d6a446369cf73a4430f75af22be55.
+# File: src/xrpld/app/ledger/LedgerHistory.cpp, lines 451-490.
+# Line numbers verified with grep -n on a local checkout of the pinned commit.
+# Source file SHA-256: 74aee4418ef3beecf2fe12bc19996f9702c051b0d05155f51ffd486adfb3856b
+# Source file git blob SHA: ccec209bd49ece6ca5d3f453fe2b7a5a9d074921
+# Source file size: 18377 bytes
+
+# --- src/xrpld/app/ledger/LedgerHistory.cpp lines 451-490 ---
+LedgerHistory::builtLedger(
+    std::shared_ptr<Ledger const> const& ledger,
+    uint256 const& consensusHash,
+    Json::Value consensus)
+{
+    LedgerIndex index = ledger->info().seq;
+    LedgerHash hash = ledger->info().hash;
+    XRPL_ASSERT(
+        !hash.isZero(), "ripple::LedgerHistory::builtLedger : nonzero hash");
+
+    std::unique_lock sl(m_consensus_validated.peekMutex());
+
+    auto entry = std::make_shared<cv_entry>();
+    m_consensus_validated.canonicalize_replace_client(index, entry);
+
+    if (entry->validated && !entry->built)
+    {
+        if (entry->validated.value() != hash)
+        {
+            JLOG(j_.error()) << "MISMATCH: seq=" << index
+                             << " validated:" << entry->validated.value()
+                             << " then:" << hash;
+            handleMismatch(
+                hash,
+                entry->validated.value(),
+                consensusHash,
+                entry->validatedConsensusHash,
+                consensus);
+        }
+        else
+        {
+            // We validated a ledger and then built it locally
+            JLOG(j_.debug()) << "MATCH: seq=" << index << " late";
+        }
+    }
+
+    entry->built.emplace(hash);
+    entry->builtConsensusHash.emplace(consensusHash);
+    entry->consensus.emplace(std::move(consensus));
+}

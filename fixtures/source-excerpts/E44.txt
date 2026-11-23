@@ -1,0 +1,16 @@
+# Source excerpt E44 — postfiatd 0085a1ff885d6a446369cf73a4430f75af22be55.
+# File: src/xrpld/app/ledger/TransactionStateSF.cpp, lines 40-47.
+# Line numbers verified with grep -n on a local checkout of the pinned commit.
+# Source file SHA-256: a6b660ec0a1e3602dc41631bb4b303f25553c3099d5176ed13e5dc0a10147568
+# Source file git blob SHA: 30a4d2f8173384e06469cd82c78ace8ff3dfc3db
+# Source file size: 1692 bytes
+
+# --- src/xrpld/app/ledger/TransactionStateSF.cpp lines 40-47 ---
+        ledgerSeq);
+}
+
+std::optional<Blob>
+TransactionStateSF::getNode(SHAMapHash const& nodeHash) const
+{
+    return fp_.getFetchPack(nodeHash.as_uint256());
+}

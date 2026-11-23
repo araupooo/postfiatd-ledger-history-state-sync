@@ -1,0 +1,24 @@
+# Source excerpt E34 — postfiatd 0085a1ff885d6a446369cf73a4430f75af22be55.
+# File: src/xrpld/app/ledger/AccountStateSF.cpp, lines 25-40.
+# Line numbers verified with grep -n on a local checkout of the pinned commit.
+# Source file SHA-256: 2dc85ca8ffdef25c4d4ff73c48e44be580816bcac21d45c6095263e820ad524b
+# Source file git blob SHA: c1f2ca26fc5f4b5cda5fdea30731d3eb59250b49
+# Source file size: 1517 bytes
+
+# --- src/xrpld/app/ledger/AccountStateSF.cpp lines 25-40 ---
+AccountStateSF::gotNode(
+    bool,
+    SHAMapHash const& nodeHash,
+    std::uint32_t ledgerSeq,
+    Blob&& nodeData,
+    SHAMapNodeType) const
+{
+    db_.store(
+        hotACCOUNT_NODE, std::move(nodeData), nodeHash.as_uint256(), ledgerSeq);
+}
+
+std::optional<Blob>
+AccountStateSF::getNode(SHAMapHash const& nodeHash) const
+{
+    return fp_.getFetchPack(nodeHash.as_uint256());
+}

@@ -1,0 +1,49 @@
+# Source excerpt E41 — postfiatd 0085a1ff885d6a446369cf73a4430f75af22be55.
+# File: src/xrpld/app/ledger/detail/InboundLedger.cpp, lines 696-736.
+# Line numbers verified with grep -n on a local checkout of the pinned commit.
+# Source file SHA-256: bed5f8eece16ae34ded38d3c1dd09019b76ef9703be7b14441efb27d71c08f07
+# Source file git blob SHA: 47d546c3af380a5baea9dd2536daf9e34a324f3f
+# Source file size: 38190 bytes
+
+# --- src/xrpld/app/ledger/detail/InboundLedger.cpp lines 696-736 ---
+    if (mHaveHeader && !mHaveTransactions && !failed_)
+    {
+        XRPL_ASSERT(
+            mLedger,
+            "ripple::InboundLedger::trigger : non-null ledger to read "
+            "transactions from");
+
+        if (!mLedger->txMap().isValid())
+        {
+            failed_ = true;
+        }
+        else if (mLedger->txMap().getHash().isZero())
+        {
+            // we need the root node
+            tmGL.set_itype(protocol::liTX_NODE);
+            *(tmGL.add_nodeids()) = SHAMapNodeID().getRawString();
+            JLOG(journal_.trace()) << "Sending TX root request to "
+                                   << (peer ? "selected peer" : "all peers");
+            mPeerSet->sendRequest(tmGL, peer);
+            return;
+        }
+        else
+        {
+            TransactionStateSF filter(
+                mLedger->txMap().family().db(), app_.getLedgerMaster());
+
+            auto nodes =
+                mLedger->txMap().getMissingNodes(missingNodesFind, &filter);
+
+            if (nodes.empty())
+            {
+                if (!mLedger->txMap().isValid())
+                    failed_ = true;
+                else
+                {
+                    mHaveTransactions = true;
+
+                    if (mHaveState)
+                        complete_ = true;
+                }
+            }
