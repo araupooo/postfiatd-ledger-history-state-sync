@@ -1,0 +1,10 @@
+# run.log — deterministic output digests (no timestamps, no absolute paths)
+# step extract_excerpts: pass
+# step ledger_history_model_config: pass
+# step simulator: pass
+# step probe: pass
+7fa88de8cd91d7b403c2b8bda3eeab50de330b6674a65a13eaf055b609c9c1f7  outputs/derived/ledger-history-results.json
+8736b0a254ac497679c18b79ffcd45044f0192b6927306a2790af402791b1854  outputs/derived/probe-results.json
+73d4ef171d18febd9fbcc8268a0de13b53e89696681745143c3cebb7fd4fc74a  outputs/derived/run-summary.json
+1a2077882b89c20fe8cc3bc8e2f38b8d1a7e3ecb4ace4ec656c02836cb978f4d  outputs/derived/scenario-matrix.json
+b2ed923073808ef34330215225c4d70ff12df2d870a28128dba1a1228cba9ed4  outputs/probe-run.log

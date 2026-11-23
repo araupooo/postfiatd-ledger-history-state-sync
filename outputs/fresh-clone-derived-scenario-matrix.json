@@ -1,0 +1,210 @@
+{
+ "rows": [
+  {
+   "fetched": 256,
+   "gap": 300,
+   "missing": 44,
+   "outcome": "partial",
+   "reason": "gap_beyond_history_window",
+   "rounds": 3,
+   "run": "A",
+   "scenario": "S-01",
+   "timeouts": 0
+  },
+  {
+   "fetched": 256,
+   "gap": 1000,
+   "missing": 744,
+   "outcome": "partial",
+   "reason": "gap_beyond_history_window",
+   "rounds": 10,
+   "run": "A",
+   "scenario": "S-02",
+   "timeouts": 0
+  },
+  {
+   "fetched": 256,
+   "gap": 1000,
+   "missing": 744,
+   "outcome": "partial",
+   "reason": "gap_beyond_history_window",
+   "rounds": 11,
+   "run": "B",
+   "scenario": "S-02",
+   "timeouts": 1
+  },
+  {
+   "fetched": 256,
+   "gap": 256,
+   "missing": 0,
+   "outcome": "synced",
+   "reason": "acquired_via_fetch_pack_and_shamap_sync",
+   "rounds": 3,
+   "run": "A",
+   "scenario": "S-03",
+   "timeouts": 0
+  },
+  {
+   "fetched": 256,
+   "gap": 257,
+   "missing": 1,
+   "outcome": "partial",
+   "reason": "gap_beyond_history_window",
+   "rounds": 3,
+   "run": "A",
+   "scenario": "S-04",
+   "timeouts": 0
+  },
+  {
+   "fetched": 0,
+   "gap": 20,
+   "missing": 20,
+   "outcome": "rejected",
+   "reason": "header_hash_mismatch",
+   "rounds": 0,
+   "run": "A",
+   "scenario": "S-05",
+   "timeouts": 0
+  },
+  {
+   "fetched": 0,
+   "gap": 20,
+   "missing": 20,
+   "outcome": "rejected",
+   "reason": "tx_node_hash_mismatch",
+   "rounds": 0,
+   "run": "B",
+   "scenario": "S-05",
+   "timeouts": 0
+  },
+  {
+   "fetched": 0,
+   "gap": 40,
+   "missing": 40,
+   "outcome": "rejected",
+   "reason": "state_node_hash_mismatch",
+   "rounds": 0,
+   "run": "A",
+   "scenario": "S-06",
+   "timeouts": 0
+  },
+  {
+   "fetched": 0,
+   "gap": 120,
+   "missing": 120,
+   "outcome": "stalled",
+   "reason": "fetch_pack_refused_validated_age_over_40s",
+   "rounds": 0,
+   "run": "A",
+   "scenario": "S-07",
+   "timeouts": 0
+  },
+  {
+   "fetched": 120,
+   "gap": 120,
+   "missing": 0,
+   "outcome": "synced",
+   "reason": "acquired_via_fetch_pack_and_shamap_sync",
+   "rounds": 3,
+   "run": "B",
+   "scenario": "S-07",
+   "timeouts": 2
+  },
+  {
+   "fetched": 100,
+   "gap": 300,
+   "missing": 200,
+   "outcome": "partial",
+   "reason": "peer_serves_partial_history",
+   "rounds": 3,
+   "run": "A",
+   "scenario": "S-08",
+   "timeouts": 0
+  },
+  {
+   "fetched": 50,
+   "gap": 300,
+   "missing": 250,
+   "outcome": "partial",
+   "reason": "peer_serves_partial_history",
+   "rounds": 3,
+   "run": "B",
+   "scenario": "S-08",
+   "timeouts": 0
+  },
+  {
+   "fetched": 0,
+   "gap": 50,
+   "missing": 50,
+   "outcome": "stalled",
+   "reason": "acquire_failed_after_timeout_limit",
+   "rounds": 0,
+   "run": "A",
+   "scenario": "S-09",
+   "timeouts": 7
+  },
+  {
+   "fetched": 50,
+   "gap": 50,
+   "missing": 0,
+   "outcome": "synced",
+   "reason": "acquired_via_fetch_pack_and_shamap_sync",
+   "rounds": 1,
+   "run": "B",
+   "scenario": "S-09",
+   "timeouts": 0
+  },
+  {
+   "fetched": 0,
+   "gap": 80,
+   "missing": 80,
+   "outcome": "stalled",
+   "reason": "no_peer_holds_ledger",
+   "rounds": 0,
+   "run": "A",
+   "scenario": "S-10",
+   "timeouts": 0
+  },
+  {
+   "fetched": 0,
+   "gap": 10,
+   "missing": 10,
+   "outcome": "rejected",
+   "reason": "zero_account_hash",
+   "rounds": 0,
+   "run": "A",
+   "scenario": "S-11",
+   "timeouts": 0
+  },
+  {
+   "fetched": 1,
+   "gap": 1,
+   "missing": 0,
+   "outcome": "synced",
+   "reason": "acquired_via_fetch_pack_and_shamap_sync",
+   "rounds": 1,
+   "run": "A",
+   "scenario": "S-12",
+   "timeouts": 0
+  },
+  {
+   "fetched": 101,
+   "gap": 150,
+   "missing": 49,
+   "outcome": "stalled",
+   "reason": "gap_below_earliest_ledger_seq",
+   "rounds": 0,
+   "run": "A",
+   "scenario": "S-13",
+   "timeouts": 0
+  }
+ ],
+ "totals": {
+  "partial": 6,
+  "rejected": 4,
+  "runs": 18,
+  "scenarios": 13,
+  "stalled": 4,
+  "synced": 4
+ }
+}
