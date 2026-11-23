@@ -1,0 +1,19 @@
+# Source excerpt E18 — postfiatd 0085a1ff885d6a446369cf73a4430f75af22be55.
+# File: src/xrpld/app/ledger/detail/LedgerMaster.cpp, lines 1946-1956.
+# Line numbers verified with grep -n on a local checkout of the pinned commit.
+# Source file SHA-256: eff20a953d6b6fafe7ca44a2999a4c90c5ef62eea82e43baed8ba3e959da5ef1
+# Source file git blob SHA: 67826c253286c69622334382ac89db711c7a60d2
+# Source file size: 70382 bytes
+
+# --- src/xrpld/app/ledger/detail/LedgerMaster.cpp lines 1946-1956 ---
+
+        auto const pubLedgers = findNewLedgersToPublish(sl);
+        if (pubLedgers.empty())
+        {
+            if (!standalone_ && !app_.getFeeTrack().isLoadedLocal() &&
+                (app_.getJobQueue().getJobCount(jtPUBOLDLEDGER) < 10) &&
+                (mValidLedgerSeq == mPubLedgerSeq) &&
+                (getValidatedLedgerAge() < MAX_LEDGER_AGE_ACQUIRE) &&
+                (app_.getNodeStore().getWriteLoad() < MAX_WRITE_LOAD_ACQUIRE))
+            {
+                // We are in sync, so can acquire

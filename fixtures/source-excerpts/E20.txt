@@ -1,0 +1,37 @@
+# Source excerpt E20 — postfiatd 0085a1ff885d6a446369cf73a4430f75af22be55.
+# File: src/xrpld/app/ledger/detail/LedgerMaster.cpp, lines 75-103.
+# Line numbers verified with grep -n on a local checkout of the pinned commit.
+# Source file SHA-256: eff20a953d6b6fafe7ca44a2999a4c90c5ef62eea82e43baed8ba3e959da5ef1
+# Source file git blob SHA: 67826c253286c69622334382ac89db711c7a60d2
+# Source file size: 70382 bytes
+
+# --- src/xrpld/app/ledger/detail/LedgerMaster.cpp lines 75-103 ---
+shouldAcquire(
+    std::uint32_t const currentLedger,
+    std::uint32_t const ledgerHistory,
+    std::optional<LedgerIndex> const minimumOnline,
+    std::uint32_t const candidateLedger,
+    beast::Journal j)
+{
+    bool const ret = [&]() {
+        // Fetch ledger if it may be the current ledger
+        if (candidateLedger >= currentLedger)
+            return true;
+
+        // Or if it is within our configured history range:
+        if (currentLedger - candidateLedger <= ledgerHistory)
+            return true;
+
+        // Or if greater than or equal to a specific minimum ledger.
+        // Do nothing if the minimum ledger to keep online is unknown.
+        return minimumOnline.has_value() && candidateLedger >= *minimumOnline;
+    }();
+
+    JLOG(j.trace()) << "Missing ledger " << candidateLedger
+                    << (ret ? " should" : " should NOT") << " be acquired";
+    return ret;
+}
+
+LedgerMaster::LedgerMaster(
+    Application& app,
+    Stopwatch& stopwatch,

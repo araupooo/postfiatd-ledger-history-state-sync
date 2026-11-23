@@ -1,0 +1,13 @@
+# Source excerpt E19 — postfiatd 0085a1ff885d6a446369cf73a4430f75af22be55.
+# File: src/xrpld/app/ledger/detail/LedgerMaster.cpp, lines 62-66.
+# Line numbers verified with grep -n on a local checkout of the pinned commit.
+# Source file SHA-256: eff20a953d6b6fafe7ca44a2999a4c90c5ef62eea82e43baed8ba3e959da5ef1
+# Source file git blob SHA: 67826c253286c69622334382ac89db711c7a60d2
+# Source file size: 70382 bytes
+
+# --- src/xrpld/app/ledger/detail/LedgerMaster.cpp lines 62-66 ---
+
+// Don't catch up more than 100 ledgers (cannot exceed 256)
+static constexpr int MAX_LEDGER_GAP{100};
+
+// Don't acquire history if ledger is too old

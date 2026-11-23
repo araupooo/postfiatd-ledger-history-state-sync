@@ -1,0 +1,58 @@
+# Source excerpt E16 — postfiatd 0085a1ff885d6a446369cf73a4430f75af22be55.
+# File: src/xrpld/app/ledger/detail/LedgerMaster.cpp, lines 723-772.
+# Line numbers verified with grep -n on a local checkout of the pinned commit.
+# Source file SHA-256: eff20a953d6b6fafe7ca44a2999a4c90c5ef62eea82e43baed8ba3e959da5ef1
+# Source file git blob SHA: 67826c253286c69622334382ac89db711c7a60d2
+# Source file size: 70382 bytes
+
+# --- src/xrpld/app/ledger/detail/LedgerMaster.cpp lines 723-772 ---
+LedgerMaster::getFetchPack(LedgerIndex missing, InboundLedger::Reason reason)
+{
+    LedgerIndex const ledgerIndex = missing + 1;
+
+    auto const haveHash{getLedgerHashForHistory(ledgerIndex, reason)};
+    if (!haveHash || haveHash->isZero())
+    {
+        JLOG(m_journal.error())
+            << "No hash for fetch pack. Missing Index " << missing;
+        return;
+    }
+
+    // Select target Peer based on highest score.  The score is randomized
+    // but biased in favor of Peers with low latency.
+    std::shared_ptr<Peer> target;
+    {
+        int maxScore = 0;
+        auto peerList = app_.overlay().getActivePeers();
+        for (auto const& peer : peerList)
+        {
+            if (peer->hasRange(missing, missing + 1))
+            {
+                int score = peer->getScore(true);
+                if (!target || (score > maxScore))
+                {
+                    target = peer;
+                    maxScore = score;
+                }
+            }
+        }
+    }
+
+    if (target)
+    {
+        protocol::TMGetObjectByHash tmBH;
+        tmBH.set_query(true);
+        tmBH.set_type(protocol::TMGetObjectByHash::otFETCH_PACK);
+        tmBH.set_ledgerhash(haveHash->begin(), 32);
+        auto packet = std::make_shared<Message>(tmBH, protocol::mtGET_OBJECTS);
+
+        target->send(packet);
+        JLOG(m_journal.trace()) << "Requested fetch pack for " << missing;
+    }
+    else
+        JLOG(m_journal.debug()) << "No peer for fetch pack";
+}
+
+void
+LedgerMaster::fixMismatch(ReadView const& ledger)
+{
