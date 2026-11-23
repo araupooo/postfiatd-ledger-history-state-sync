@@ -1,0 +1,16 @@
+# Source excerpt E09 — postfiatd 0085a1ff885d6a446369cf73a4430f75af22be55.
+# File: src/xrpld/app/ledger/detail/InboundLedgers.cpp, lines 76-83.
+# Line numbers verified with grep -n on a local checkout of the pinned commit.
+# Source file SHA-256: d17b6ae713cb9e76b7691611a3a14abe04f38bc3b4db3aed923641bbc61b2150
+# Source file git blob SHA: b05268f65b8b25694101ac7c158284ed0619214b
+# Source file size: 13824 bytes
+
+# --- src/xrpld/app/ledger/detail/InboundLedgers.cpp lines 76-83 ---
+            XRPL_ASSERT(
+                hash.isNonZero(),
+                "ripple::InboundLedgersImp::acquire::doAcquire : nonzero hash");
+
+            // probably not the right rule
+            if (app_.getOPs().isNeedNetworkLedger() &&
+                (reason != InboundLedger::Reason::GENERIC) &&
+                (reason != InboundLedger::Reason::CONSENSUS))

@@ -1,0 +1,25 @@
+# Source excerpt E05 — postfiatd 0085a1ff885d6a446369cf73a4430f75af22be55.
+# File: src/xrpld/app/ledger/detail/InboundLedger.cpp, lines 246-262.
+# Line numbers verified with grep -n on a local checkout of the pinned commit.
+# Source file SHA-256: bed5f8eece16ae34ded38d3c1dd09019b76ef9703be7b14441efb27d71c08f07
+# Source file git blob SHA: 47d546c3af380a5baea9dd2536daf9e34a324f3f
+# Source file size: 38190 bytes
+
+# --- src/xrpld/app/ledger/detail/InboundLedger.cpp lines 246-262 ---
+            JLOG(journal_.trace()) << "Ledger header found in fetch pack";
+            mLedger = std::make_shared<Ledger>(
+                deserializePrefixedHeader(makeSlice(data)),
+                app_.config(),
+                app_.getNodeFamily());
+            if (mLedger->info().hash != hash_ ||
+                (mSeq != 0 && mSeq != mLedger->info().seq))
+            {
+                // We know for a fact the ledger can never be acquired
+                JLOG(journal_.warn())
+                    << "hash " << hash_ << " seq " << std::to_string(mSeq)
+                    << " cannot be a ledger";
+                mLedger.reset();
+                failed_ = true;
+            }
+        };
+

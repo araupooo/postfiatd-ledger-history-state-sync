@@ -1,0 +1,12 @@
+# Source excerpt E01 — postfiatd 0085a1ff885d6a446369cf73a4430f75af22be55.
+# File: src/xrpld/app/ledger/detail/InboundLedger.cpp, lines 72-75.
+# Line numbers verified with grep -n on a local checkout of the pinned commit.
+# Source file SHA-256: bed5f8eece16ae34ded38d3c1dd09019b76ef9703be7b14441efb27d71c08f07
+# Source file git blob SHA: 47d546c3af380a5baea9dd2536daf9e34a324f3f
+# Source file size: 38190 bytes
+
+# --- src/xrpld/app/ledger/detail/InboundLedger.cpp lines 72-75 ---
+
+// millisecond for each ledger timeout
+auto constexpr ledgerAcquireTimeout = 3000ms;
+
