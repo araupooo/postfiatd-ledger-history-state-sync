@@ -1,0 +1,30 @@
+# Source excerpt E23 — postfiatd 0085a1ff885d6a446369cf73a4430f75af22be55.
+# File: src/xrpld/app/ledger/detail/LedgerMaster.cpp, lines 192-213.
+# Line numbers verified with grep -n on a local checkout of the pinned commit.
+# Source file SHA-256: eff20a953d6b6fafe7ca44a2999a4c90c5ef62eea82e43baed8ba3e959da5ef1
+# Source file git blob SHA: 67826c253286c69622334382ac89db711c7a60d2
+# Source file size: 70382 bytes
+
+# --- src/xrpld/app/ledger/detail/LedgerMaster.cpp lines 192-213 ---
+LedgerMaster::getValidatedLedgerAge()
+{
+    using namespace std::chrono_literals;
+
+    std::chrono::seconds valClose{mValidLedgerSign.load()};
+    if (valClose == 0s)
+    {
+        JLOG(m_journal.debug()) << "No validated ledger";
+        return weeks{2};
+    }
+
+    std::chrono::seconds ret = app_.timeKeeper().closeTime().time_since_epoch();
+    ret -= valClose;
+    ret = (ret > 0s) ? ret : 0s;
+    static std::chrono::seconds lastRet = -1s;
+
+    if (ret != lastRet)
+    {
+        JLOG(m_journal.trace()) << "Validated ledger age is " << ret.count();
+        lastRet = ret;
+    }
+    return ret;

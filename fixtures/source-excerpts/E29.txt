@@ -1,0 +1,44 @@
+# Source excerpt E29 — postfiatd 0085a1ff885d6a446369cf73a4430f75af22be55.
+# File: src/xrpld/app/ledger/LedgerHistory.cpp, lines 123-158.
+# Line numbers verified with grep -n on a local checkout of the pinned commit.
+# Source file SHA-256: 74aee4418ef3beecf2fe12bc19996f9702c051b0d05155f51ffd486adfb3856b
+# Source file git blob SHA: ccec209bd49ece6ca5d3f453fe2b7a5a9d074921
+# Source file size: 18377 bytes
+
+# --- src/xrpld/app/ledger/LedgerHistory.cpp lines 123-158 ---
+LedgerHistory::getLedgerByHash(LedgerHash const& hash)
+{
+    auto ret = m_ledgers_by_hash.fetch(hash);
+
+    if (ret)
+    {
+        XRPL_ASSERT(
+            ret->isImmutable(),
+            "ripple::LedgerHistory::getLedgerByHash : immutable fetched "
+            "ledger");
+        XRPL_ASSERT(
+            ret->info().hash == hash,
+            "ripple::LedgerHistory::getLedgerByHash : fetched ledger hash "
+            "match");
+        return ret;
+    }
+
+    ret = loadByHash(hash, app_);
+
+    if (!ret)
+        return ret;
+
+    XRPL_ASSERT(
+        ret->isImmutable(),
+        "ripple::LedgerHistory::getLedgerByHash : immutable loaded ledger");
+    XRPL_ASSERT(
+        ret->info().hash == hash,
+        "ripple::LedgerHistory::getLedgerByHash : loaded ledger hash match");
+    m_ledgers_by_hash.canonicalize_replace_client(ret->info().hash, ret);
+    XRPL_ASSERT(
+        ret->info().hash == hash,
+        "ripple::LedgerHistory::getLedgerByHash : result hash match");
+
+    return ret;
+}
+

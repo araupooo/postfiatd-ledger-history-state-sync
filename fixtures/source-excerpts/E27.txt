@@ -1,0 +1,21 @@
+# Source excerpt E27 — postfiatd 0085a1ff885d6a446369cf73a4430f75af22be55.
+# File: src/xrpld/app/ledger/LedgerHistory.cpp, lines 55-67.
+# Line numbers verified with grep -n on a local checkout of the pinned commit.
+# Source file SHA-256: 74aee4418ef3beecf2fe12bc19996f9702c051b0d05155f51ffd486adfb3856b
+# Source file git blob SHA: ccec209bd49ece6ca5d3f453fe2b7a5a9d074921
+# Source file size: 18377 bytes
+
+# --- src/xrpld/app/ledger/LedgerHistory.cpp lines 55-67 ---
+LedgerHistory::insert(
+    std::shared_ptr<Ledger const> const& ledger,
+    bool validated)
+{
+    if (!ledger->isImmutable())
+        LogicError("mutable Ledger in insert");
+
+    XRPL_ASSERT(
+        ledger->stateMap().getHash().isNonZero(),
+        "ripple::LedgerHistory::insert : nonzero hash");
+
+    std::unique_lock sl(m_ledgers_by_hash.peekMutex());
+

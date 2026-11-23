@@ -1,0 +1,34 @@
+# Source excerpt E25 — postfiatd 0085a1ff885d6a446369cf73a4430f75af22be55.
+# File: src/xrpld/app/ledger/detail/LedgerMaster.cpp, lines 1888-1913.
+# Line numbers verified with grep -n on a local checkout of the pinned commit.
+# Source file SHA-256: eff20a953d6b6fafe7ca44a2999a4c90c5ef62eea82e43baed8ba3e959da5ef1
+# Source file git blob SHA: 67826c253286c69622334382ac89db711c7a60d2
+# Source file size: 70382 bytes
+
+# --- src/xrpld/app/ledger/detail/LedgerMaster.cpp lines 1888-1913 ---
+            progress = true;
+        }
+        else
+        {
+            std::uint32_t fetchSz;
+            // Do not fetch ledger sequences lower
+            // than the earliest ledger sequence
+            fetchSz = app_.getNodeStore().earliestLedgerSeq();
+            fetchSz = missing >= fetchSz
+                ? std::min(ledger_fetch_size_, (missing - fetchSz) + 1)
+                : 0;
+            try
+            {
+                for (std::uint32_t i = 0; i < fetchSz; ++i)
+                {
+                    std::uint32_t seq = missing - i;
+                    if (auto h = getLedgerHashForHistory(seq, reason))
+                    {
+                        XRPL_ASSERT(
+                            h->isNonZero(),
+                            "ripple::LedgerMaster::fetchForHistory : "
+                            "prefetched ledger");
+                        app_.getInboundLedgers().acquire(*h, seq, reason);
+                    }
+                }
+            }

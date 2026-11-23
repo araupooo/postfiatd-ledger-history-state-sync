@@ -1,0 +1,33 @@
+# Source excerpt E30 — postfiatd 0085a1ff885d6a446369cf73a4430f75af22be55.
+# File: src/xrpld/app/ledger/LedgerHistory.cpp, lines 377-401.
+# Line numbers verified with grep -n on a local checkout of the pinned commit.
+# Source file SHA-256: 74aee4418ef3beecf2fe12bc19996f9702c051b0d05155f51ffd486adfb3856b
+# Source file git blob SHA: ccec209bd49ece6ca5d3f453fe2b7a5a9d074921
+# Source file size: 18377 bytes
+
+# --- src/xrpld/app/ledger/LedgerHistory.cpp lines 377-401 ---
+    // Disagreement over prior ledger indicates sync issue
+    if (builtLedger->info().parentHash != validLedger->info().parentHash)
+    {
+        JLOG(j_.error()) << "MISMATCH on prior ledger";
+        return;
+    }
+
+    // Disagreement over close time indicates Byzantine failure
+    if (builtLedger->info().closeTime != validLedger->info().closeTime)
+    {
+        JLOG(j_.error()) << "MISMATCH on close time";
+        return;
+    }
+
+    if (builtConsensusHash && validatedConsensusHash)
+    {
+        if (builtConsensusHash != validatedConsensusHash)
+            JLOG(j_.error())
+                << "MISMATCH on consensus transaction set "
+                << " built: " << to_string(*builtConsensusHash)
+                << " validated: " << to_string(*validatedConsensusHash);
+        else
+            JLOG(j_.error()) << "MISMATCH with same consensus transaction set: "
+                             << to_string(*builtConsensusHash);
+    }

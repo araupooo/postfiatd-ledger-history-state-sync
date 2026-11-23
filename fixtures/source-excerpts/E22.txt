@@ -1,0 +1,31 @@
+# Source excerpt E22 — postfiatd 0085a1ff885d6a446369cf73a4430f75af22be55.
+# File: src/xrpld/app/ledger/detail/LedgerMaster.cpp, lines 217-239.
+# Line numbers verified with grep -n on a local checkout of the pinned commit.
+# Source file SHA-256: eff20a953d6b6fafe7ca44a2999a4c90c5ef62eea82e43baed8ba3e959da5ef1
+# Source file git blob SHA: 67826c253286c69622334382ac89db711c7a60d2
+# Source file size: 70382 bytes
+
+# --- src/xrpld/app/ledger/detail/LedgerMaster.cpp lines 217-239 ---
+LedgerMaster::isCaughtUp(std::string& reason)
+{
+    using namespace std::chrono_literals;
+
+    if (getPublishedLedgerAge() > 3min)
+    {
+        reason = "No recently-published ledger";
+        return false;
+    }
+    std::uint32_t validClose = mValidLedgerSign.load();
+    std::uint32_t pubClose = mPubLedgerClose.load();
+    if (!validClose || !pubClose)
+    {
+        reason = "No published ledger";
+        return false;
+    }
+    if (validClose > (pubClose + 90))
+    {
+        reason = "Published ledger lags validated ledger";
+        return false;
+    }
+    return true;
+}

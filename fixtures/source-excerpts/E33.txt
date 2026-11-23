@@ -1,0 +1,22 @@
+# Source excerpt E33 — postfiatd 0085a1ff885d6a446369cf73a4430f75af22be55.
+# File: src/xrpld/shamap/detail/SHAMapSync.cpp, lines 319-332.
+# Line numbers verified with grep -n on a local checkout of the pinned commit.
+# Source file SHA-256: e82dcf87b76c3a03b9aa84c30dd497a547300a510ea3a5b34e5fe42178641a50
+# Source file git blob SHA: 8a7d75ccf86460ccd8e61e6b007b332e5cbd9e44
+# Source file size: 28155 bytes
+
+# --- src/xrpld/shamap/detail/SHAMapSync.cpp lines 319-332 ---
+SHAMap::getMissingNodes(int max, SHAMapSyncFilter* filter)
+{
+    XRPL_ASSERT(
+        root_->getHash().isNonZero(),
+        "ripple::SHAMap::getMissingNodes : nonzero root hash");
+    XRPL_ASSERT(max > 0, "ripple::SHAMap::getMissingNodes : valid max input");
+
+    MissingNodes mn(
+        max,
+        filter,
+        512,  // number of async reads per pass
+        f_.getFullBelowCache()->getGeneration());
+
+    if (!root_->isInner() ||

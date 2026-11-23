@@ -1,0 +1,43 @@
+# Source excerpt E28 — postfiatd 0085a1ff885d6a446369cf73a4430f75af22be55.
+# File: src/xrpld/app/ledger/LedgerHistory.cpp, lines 86-120.
+# Line numbers verified with grep -n on a local checkout of the pinned commit.
+# Source file SHA-256: 74aee4418ef3beecf2fe12bc19996f9702c051b0d05155f51ffd486adfb3856b
+# Source file git blob SHA: ccec209bd49ece6ca5d3f453fe2b7a5a9d074921
+# Source file size: 18377 bytes
+
+# --- src/xrpld/app/ledger/LedgerHistory.cpp lines 86-120 ---
+LedgerHistory::getLedgerBySeq(LedgerIndex index)
+{
+    {
+        std::unique_lock sl(m_ledgers_by_hash.peekMutex());
+        auto it = mLedgersByIndex.find(index);
+
+        if (it != mLedgersByIndex.end())
+        {
+            uint256 hash = it->second;
+            sl.unlock();
+            return getLedgerByHash(hash);
+        }
+    }
+
+    std::shared_ptr<Ledger const> ret = loadByIndex(index, app_);
+
+    if (!ret)
+        return ret;
+
+    XRPL_ASSERT(
+        ret->info().seq == index,
+        "ripple::LedgerHistory::getLedgerBySeq : result sequence match");
+
+    {
+        // Add this ledger to the local tracking by index
+        std::unique_lock sl(m_ledgers_by_hash.peekMutex());
+
+        XRPL_ASSERT(
+            ret->isImmutable(),
+            "ripple::LedgerHistory::getLedgerBySeq : immutable result ledger");
+        m_ledgers_by_hash.canonicalize_replace_client(ret->info().hash, ret);
+        mLedgersByIndex[ret->info().seq] = ret->info().hash;
+        return (ret->info().seq == index) ? ret : nullptr;
+    }
+}

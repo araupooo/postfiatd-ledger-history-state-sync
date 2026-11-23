@@ -1,0 +1,27 @@
+# Source excerpt E26 — postfiatd 0085a1ff885d6a446369cf73a4430f75af22be55.
+# File: src/xrpld/app/ledger/detail/LedgerMaster.cpp, lines 870-888.
+# Line numbers verified with grep -n on a local checkout of the pinned commit.
+# Source file SHA-256: eff20a953d6b6fafe7ca44a2999a4c90c5ef62eea82e43baed8ba3e959da5ef1
+# Source file git blob SHA: 67826c253286c69622334382ac89db711c7a60d2
+# Source file size: 70382 bytes
+
+# --- src/xrpld/app/ledger/detail/LedgerMaster.cpp lines 870-888 ---
+
+        if (ledger->info().seq != 0 && haveLedger(ledger->info().seq - 1))
+        {
+            // we think we have the previous ledger, double check
+            auto prevLedger = getLedgerBySeq(ledger->info().seq - 1);
+
+            if (!prevLedger ||
+                (prevLedger->info().hash != ledger->info().parentHash))
+            {
+                JLOG(m_journal.warn())
+                    << "Acquired ledger invalidates previous ledger: "
+                    << (prevLedger ? "hashMismatch" : "missingLedger");
+                fixMismatch(*ledger);
+            }
+        }
+    }
+}
+
+void

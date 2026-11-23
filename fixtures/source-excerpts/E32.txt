@@ -1,0 +1,16 @@
+# Source excerpt E32 — postfiatd 0085a1ff885d6a446369cf73a4430f75af22be55.
+# File: src/xrpld/app/ledger/LedgerHistory.cpp, lines 44-51.
+# Line numbers verified with grep -n on a local checkout of the pinned commit.
+# Source file SHA-256: 74aee4418ef3beecf2fe12bc19996f9702c051b0d05155f51ffd486adfb3856b
+# Source file git blob SHA: ccec209bd49ece6ca5d3f453fe2b7a5a9d074921
+# Source file size: 18377 bytes
+
+# --- src/xrpld/app/ledger/LedgerHistory.cpp lines 44-51 ---
+    , m_consensus_validated(
+          "ConsensusValidated",
+          64,
+          std::chrono::minutes{5},
+          stopwatch(),
+          app_.journal("TaggedCache"))
+    , j_(app.journal("LedgerHistory"))
+{

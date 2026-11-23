@@ -1,0 +1,35 @@
+# Source excerpt E24 — postfiatd 0085a1ff885d6a446369cf73a4430f75af22be55.
+# File: src/xrpld/app/ledger/detail/LedgerMaster.cpp, lines 1830-1856.
+# Line numbers verified with grep -n on a local checkout of the pinned commit.
+# Source file SHA-256: eff20a953d6b6fafe7ca44a2999a4c90c5ef62eea82e43baed8ba3e959da5ef1
+# Source file git blob SHA: 67826c253286c69622334382ac89db711c7a60d2
+# Source file size: 70382 bytes
+
+# --- src/xrpld/app/ledger/detail/LedgerMaster.cpp lines 1830-1856 ---
+{
+    scope_unlock sul{sl};
+    if (auto hash = getLedgerHashForHistory(missing, reason))
+    {
+        XRPL_ASSERT(
+            hash->isNonZero(),
+            "ripple::LedgerMaster::fetchForHistory : found ledger");
+        auto ledger = getLedgerByHash(*hash);
+        if (!ledger)
+        {
+            if (!app_.getInboundLedgers().isFailure(*hash))
+            {
+                ledger =
+                    app_.getInboundLedgers().acquire(*hash, missing, reason);
+                if (!ledger && missing != fetch_seq_ &&
+                    missing > app_.getNodeStore().earliestLedgerSeq())
+                {
+                    JLOG(m_journal.trace())
+                        << "fetchForHistory want fetch pack " << missing;
+                    fetch_seq_ = missing;
+                    getFetchPack(missing, reason);
+                }
+                else
+                    JLOG(m_journal.trace())
+                        << "fetchForHistory no fetch pack for " << missing;
+            }
+            else
