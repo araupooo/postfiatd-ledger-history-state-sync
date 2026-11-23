@@ -1,0 +1,63 @@
+{
+ "pack": "Ledger History and State-Sync in postfiatd",
+ "pinned_commit": "0085a1ff885d6a446369cf73a4430f75af22be55",
+ "counts": {
+  "rules": {
+   "total": 45,
+   "by_status": {
+    "VERIFIED": 38,
+    "SPECIFIED": 4,
+    "MODELLED": 2,
+    "UNTESTABLE": 1
+   }
+  },
+  "scenarios": {
+   "total": 13,
+   "runs": 18,
+   "synced": 4,
+   "stalled": 4,
+   "rejected": 4,
+   "partial": 6
+  },
+  "findings": {
+   "total": 12,
+   "by_severity": {
+    "HIGH": 3,
+    "LOW": 4,
+    "MEDIUM": 5
+   },
+   "by_status": {
+    "VERIFIED": 12
+   }
+  },
+  "claims": {
+   "total": 24,
+   "by_status": {
+    "MODELLED": 4,
+    "SPECIFIED": 2,
+    "UNTESTABLE": 2,
+    "VERIFIED": 16
+   }
+  },
+  "risks": {
+   "total": 14,
+   "by_severity": {
+    "HIGH": 3,
+    "LOW": 3,
+    "MEDIUM": 8
+   }
+  },
+  "gaps": 8
+ },
+ "probes": {
+  "passed": 12,
+  "total": 12
+ },
+ "results_sha256": "7fa88de8cd91d7b403c2b8bda3eeab50de330b6674a65a13eaf055b609c9c1f7",
+ "matrix_sha256": "1a2077882b89c20fe8cc3bc8e2f38b8d1a7e3ecb4ace4ec656c02836cb978f4d",
+ "verification": {
+  "excerpts": 44,
+  "source_files": 10
+ },
+ "status": "SOURCE-DERIVED"
+}
